@@ -18,6 +18,7 @@ class Book(db.Model):
     isbn: Mapped[str] = mapped_column (unique=True)
     title: Mapped[str] = mapped_column()
     publication_year: Mapped[int] = mapped_column()
+    book_cover: Mapped[str] = mapped_column()
     author_id: Mapped[int] = mapped_column(db.ForeignKey("author.id"))
     author: Mapped["Author"] = relationship("Author", backref="books")
 

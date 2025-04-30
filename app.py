@@ -5,7 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import redirect
 
 from data_models import db, Author, Book
-import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.sqlite'
@@ -38,7 +37,8 @@ def add_book():
             isbn =request.form['isbn'],
             title=request.form['title'],
             publication_year=request.form['publication_year'],
-            author_id=request.form['author_id']
+            author_id=request.form['author_id'],
+            book_cover=f"https://covers.openlibrary.org/b/isbn/{request.form['isbn']}-M.jpg"
         )
         db.session.add(book)
         db.session.commit()
@@ -47,4 +47,6 @@ def add_book():
     return render_template("add_book.html", authors=authors)
 
 
+# with app.app_context():
+#   db.create_all()
 app.run(port=5002, debug=True)
