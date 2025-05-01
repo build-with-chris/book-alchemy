@@ -65,9 +65,15 @@ def add_book():
 @app.route("/book/<int:book_id>/delete", methods=['POST'])
 def delete_book(book_id):
     book_to_delete = Book.query.get_or_404(book_id)
+    author=book_to_delete.author
     db.session.delete(book_to_delete)
     db.session.commit()
-    flash(f'Book {book_to_delete.title} was successfully deleted.')
+    if not author.books:
+        db.session.delete(author)
+        db.session.commit()
+        flash(f'Book {book_to_delete.title} AND {author.name} were successfully deleted.')
+    else:
+        flash(f'Book {book_to_delete.title} was successfully deleted.')
     return redirect(url_for('home'))
 
 

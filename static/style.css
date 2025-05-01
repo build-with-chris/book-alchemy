@@ -71,3 +71,69 @@
   border-radius: 5px;
   font-weight: bold;
 }
+
+.add-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  margin: 40px;
+}
+
+.add-button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+.form-card {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  margin: 40px auto;
+  font-family: Arial, sans-serif;
+}
+
+.form-card label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-card input[type="text"],
+.form-card input[type="date"],
+.form-card input[type="number"],
+.form-card select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.form-card input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.form-card input[type="submit"]:hover {
+  background-color: #45a049;
+}
