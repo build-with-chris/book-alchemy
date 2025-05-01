@@ -4,11 +4,14 @@ from flask import Flask, request, render_template, jsonify, url_for, flash, get_
 from data_models import db, Author, Book
 from sqlalchemy import or_
 from werkzeug.utils import redirect
-
-
+import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.sqlite'
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(basedir, 'data', 'library.sqlite')}"
+
+
+
 app.secret_key = "1234"
 
 db.init_app(app)
@@ -77,6 +80,6 @@ def delete_book(book_id):
     return redirect(url_for('home'))
 
 
-# with app.app_context():
-#   db.create_all()
+with app.app_context():
+  db.create_all()
 app.run(port=5002, debug=True)
