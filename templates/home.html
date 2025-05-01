@@ -7,6 +7,20 @@
     <link rel="stylesheet" href="static/style.css">
   </head>
   <body>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-message">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+  <form method="GET" action="{{ url_for('home') }}" class="search-form">
+    <input type="text" id="search" name="search">
+    <input type="submit" value="Search">
+  </form>
+
   <form method="GET" action="{{ url_for('home') }}" class="sort-form">
   <label for="sort_by">Sort by:</label>
   <select name="sort_by" id="sort_by" onchange="this.form.submit()">
@@ -15,12 +29,21 @@
   </select>
 </form>
 <div class="book-grid">
+  {% if books %}
   {% for book in books %}
     <div class="book-card">
       <h3>{{ book.title }}<br><small>by {{ book.author.name }}</small></h3>
       <img class="book-cover" src="{{ book.book_cover }}" alt="Book cover">
+      <form method="POST" action="{{ url_for('delete_book', book_id=book.id) }}" class="delete-book">
+        <input type="submit" value="Delete" onclick="return confirm('Continue to delete');">
+        </form>
     </div>
   {% endfor %}
+  {% else %}
+  <div id="no_books">
+    <h3>No books match the search</h3>
+  </div>
+  {% endif %}
 </div>
 
 
