@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="static/style.css">
   </head>
   <body>
+  <form method="GET" action="{{ url_for('home') }}" class="sort-form">
+  <label for="sort_by">Sort by:</label>
+  <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+    <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title</option>
+    <option value="author" {% if sort_by == 'author' %}selected{% endif %}>Author</option>
+  </select>
+</form>
 <div class="book-grid">
   {% for book in books %}
     <div class="book-card">

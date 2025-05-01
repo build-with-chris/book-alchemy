@@ -1,10 +1,9 @@
-from crypt import methods
-
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
+from data_models import db, Author, Book
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import redirect
 
-from data_models import db, Author, Book
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.sqlite'
@@ -12,8 +11,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.sqlite'
 db.init_app(app)
 @app.route("/home")
 def home():
-    books = Book.query.all()
-    return render_template("home.html", books=books)
+    sort_by= request.args.get('sort_by', 'title')
+    if sort_by == 'author':
+        books = Book.query.join(Author).order_by(Author.name).all()
+    else:
+        books = Book.query.order_by(Book.title).all()
+    return render_template("home.html", books=books, sort_by=sort_by)
 
 
 @app.route('/add_author', methods=['GET','POST'])

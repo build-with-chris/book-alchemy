@@ -17,3 +17,30 @@
   height: 350px;
   margin-top: 10px;
 }
+
+.sort-form {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 50px 0 0;
+}
+
+.sort-form label {
+  font-weight: bold;
+  margin-right: 10px;
+  font-size: 1rem;
+}
+
+.sort-form select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sort-form select:hover {
+  border-color: #999;
+  background-color: #f0f0f0;
+}
