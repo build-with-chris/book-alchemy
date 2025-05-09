@@ -15,7 +15,7 @@ class Author(db.Model):
 
 class Book(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    isbn: Mapped[str] = mapped_column()
+    isbn: Mapped[str] = mapped_column(unique=True)
     title: Mapped[str] = mapped_column()
     publication_year: Mapped[int] = mapped_column()
     book_cover: Mapped[str] = mapped_column()

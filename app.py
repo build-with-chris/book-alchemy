@@ -56,7 +56,7 @@ def add_author():
             flash("This author name is already in the database.")
             return redirect(url_for('home'))
 
-    return render_template("add_author.html")
+    return render_template("add_author.html",  form_data=request.form)
 
 
 @app.route('/add_book', methods=['GET', 'POST'])
@@ -69,10 +69,15 @@ def add_book():
             author_id=request.form['author_id'],
             book_cover=f"https://covers.openlibrary.org/b/isbn/{request.form['isbn']}-M.jpg"
         )
-        db.session.add(book)
-        db.session.commit()
-        flash(f"Successfully saved {book.title}.")
-        return redirect(url_for('home'))
+        try:
+            db.session.add(book)
+            db.session.commit()
+            flash(f"Successfully saved {book.title}.")
+            return redirect(url_for('home'))
+        except IntegrityError:
+            db.session.rollback()
+            flash("This ISBN is already in the database.")
+            return redirect(url_for('home'))
     authors = Author.query.all()
     return render_template("add_book.html", authors=authors)
 
