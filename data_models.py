@@ -9,13 +9,13 @@ db = SQLAlchemy(model_class=Base)
 
 class Author(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column()
+    name: Mapped[str] = mapped_column(unique=True)
     birth_date: Mapped[int] = mapped_column()
     death_date: Mapped[int] = mapped_column()
 
 class Book(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    isbn: Mapped[str] = mapped_column (unique=True)
+    isbn: Mapped[str] = mapped_column()
     title: Mapped[str] = mapped_column()
     publication_year: Mapped[int] = mapped_column()
     book_cover: Mapped[str] = mapped_column()

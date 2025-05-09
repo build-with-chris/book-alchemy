@@ -42,6 +42,11 @@
       <form method="POST" action="{{ url_for('delete_book', book_id=book.id) }}" class="delete-book">
         <input type="submit" value="Delete" onclick="return confirm('Continue to delete');">
         </form>
+
+      <form method="GET" action="{{ url_for('update_book', book_id=book.id, author_id=author_id) }}" class="update-book">
+        <input type="submit" value="Edit">
+        </form>
+
     </div>
   {% endfor %}
   {% else %}

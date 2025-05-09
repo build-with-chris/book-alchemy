@@ -5,6 +5,7 @@ from data_models import db, Author, Book
 from sqlalchemy import or_
 from werkzeug.utils import redirect
 import os
+from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -15,6 +16,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(basedir, 'data
 app.secret_key = "1234"
 
 db.init_app(app)
+
+@app.route("/")
+def redirect_home():
+    return redirect(url_for('home'))
+
 @app.route("/home")
 def home():
     sort_by= request.args.get('sort_by', 'title')
@@ -40,10 +46,16 @@ def add_author():
             birth_date=request.form['birthdate'],
             death_date=request.form['date_of_death']
         )
-        db.session.add(author)
-        db.session.commit()
-        flash(f'Successfully added this author')
-        return redirect(url_for('home'))
+        try:
+            db.session.add(author)
+            db.session.commit()
+            flash(f'Successfully added this author')
+            return redirect(url_for('home'))
+        except IntegrityError:
+            db.session.rollback()
+            flash("This author name is already in the database.")
+            return redirect(url_for('home'))
+
     return render_template("add_author.html")
 
 
@@ -80,6 +92,23 @@ def delete_book(book_id):
     return redirect(url_for('home'))
 
 
+@app.route("/book/<int:book_id>/update", methods=["GET", "POST"])
+def update_book(book_id):
+    book = Book.query.get(book_id)
+    authors= Author.query.order_by(Author.name).all()
+    if request.method == "POST":
+        book.isbn = request.form["isbn"]
+        book.title =  request.form["title"]
+        book.publication_year = request.form["year"]
+        book.author_id = request.form["author_id"]
+
+        db.session.commit()
+        flash("book is updated.")
+        return redirect(url_for('home'))
+    return render_template('update.html', book=book, authors=authors)
+
+
+
 with app.app_context():
-  db.create_all()
+    db.create_all()
 app.run(port=5002, debug=True)
